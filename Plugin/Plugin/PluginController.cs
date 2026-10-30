@@ -282,7 +282,9 @@ namespace PilotsDeck.Plugin
                         ForcedRefresh = true;
                     }
 
-                    LastSimState = SimController.SimState;
+                    //don't commit SESSION before the Global Settings are received - otherwise the READY Transition is never executed
+                    if (SimController.SimState != SimulatorState.SESSION || ActionManager.ProfileSwitcherManager.ReceivedGlobalSettings)
+                        LastSimState = SimController.SimState;
                 }
 
                 if (LastSimReadyCmd != SimController.IsReadyCommand)
